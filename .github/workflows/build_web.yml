@@ -16,7 +16,7 @@ jobs:
           done
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.4'
+          flutter-version: '3.35.0'
           channel: 'stable'
       - run: flutter pub get
       - run: flutter build web --release --no-wasm-dry-run
