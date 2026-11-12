@@ -1,0 +1,25 @@
+name: Build Web para Hostinger
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Organizar pasta lib
+        run: |
+          mkdir -p lib
+          for item in *; do
+            if [[ "$item" != "assets" && "$item" != "web" && "$item" != "lib" && "$item" != "pubspec.yaml" && "$item" != "analysis_options.yaml" && "$item" != "flutter_native_splash.yaml" && "$item" != "README.md" ]]; then
+              mv "$item" lib/
+            fi
+          done
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: flutter pub get
+      - run: flutter build web --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arquivos-hostinger
+          path: build/web/
