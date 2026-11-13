@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Organizar pasta lib
+      - name: Organizar pasta lib e corrigir pacotes
         run: |
           mkdir -p lib
           for item in *; do
@@ -14,11 +14,13 @@ jobs:
               mv "$item" lib/
             fi
           done
+          echo "" >> pubspec.yaml
+          echo "dependency_overrides:" >> pubspec.yaml
+          echo "  stripe_js: ^7.2.0" >> pubspec.yaml
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
       - run: flutter pub get
-      - run: flutter pub upgrade stripe_js flutter_stripe_web
       - run: flutter build web --release --no-wasm-dry-run
       - uses: actions/upload-artifact@v4
         with:
